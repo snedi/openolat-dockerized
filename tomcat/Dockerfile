@@ -1,20 +1,26 @@
+ARG OPENOLAT_PACKAGE_NAME_VER="openolat_1520"
+
 FROM busybox
+
+ARG OPENOLAT_PACKAGE_NAME_VER
 
 WORKDIR /tmp
 
 RUN wget --no-check-certificate -q https://mirror.koddos.net/apache/tomcat/tomcat-8/v8.5.59/bin/apache-tomcat-8.5.59.tar.gz -O - | tar -xz
-RUN wget --no-check-certificate -q http://www.openolat.org/fileadmin/downloads/releases/openolat_1520.war
+RUN wget --no-check-certificate -q http://www.openolat.org/fileadmin/downloads/releases/${OPENOLAT_PACKAGE_NAME_VER}.war
 
 FROM alpine
+
+ARG OPENOLAT_PACKAGE_NAME_VER
 
 ARG INSTALLATION_DIR="/home/openolat"
 
 COPY --from=0 /tmp/apache-tomcat-8.5.59 /usr/tomcat
-COPY --from=0 /tmp/openolat_1520.war ${INSTALLATION_DIR}/openolat_1520.war
+COPY --from=0 /tmp/${OPENOLAT_PACKAGE_NAME_VER}.war ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER}.war
 
-RUN mkdir -p ${INSTALLATION_DIR}/openolat_1520 && \
-    unzip -d ${INSTALLATION_DIR}/openolat_1520 ${INSTALLATION_DIR}/openolat_1520.war && \
-    ln -s ${INSTALLATION_DIR}/openolat_1520 ${INSTALLATION_DIR}/webapp
+RUN mkdir -p ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER} && \
+    unzip -d ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER} ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER}.war && \
+    ln -s ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER} ${INSTALLATION_DIR}/webapp
 
 RUN apk --no-cache add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 

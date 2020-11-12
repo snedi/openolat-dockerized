@@ -1,1 +1,1 @@
-docker build . -t my/openolat2
+docker build . -t $OPENOLAT_DOCKER_IMAGE_WEB
