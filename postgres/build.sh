@@ -1,1 +1,1 @@
-docker build . -t my/openolat2-db
+docker build . -t $OPENOLAT_DOCKER_IMAGE_DB

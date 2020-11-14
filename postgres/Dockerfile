@@ -1,11 +1,17 @@
+ARG OPENOLAT_PACKAGE_NAME_VER="openolat_1520"
+
 FROM busybox
+
+ARG OPENOLAT_PACKAGE_NAME_VER
 
 WORKDIR /tmp
 
-RUN wget --no-check-certificate -q http://www.openolat.org/fileadmin/downloads/releases/openolat_1520.war
-RUN mkdir -p openolat_1520 && \
-    unzip -d openolat_1520 openolat_1520.war 
+RUN wget --no-check-certificate -q http://www.openolat.org/fileadmin/downloads/releases/${OPENOLAT_PACKAGE_NAME_VER}.war
+RUN mkdir -p ${OPENOLAT_PACKAGE_NAME_VER} && \
+    unzip -d ${OPENOLAT_PACKAGE_NAME_VER} ${OPENOLAT_PACKAGE_NAME_VER}.war
 
 FROM postgres:9.4
 
-COPY --from=0 /tmp/openolat_1520/WEB-INF/classes/database/postgresql/setupDatabase.sql /tmp/setupDatabase.sql
+ARG OPENOLAT_PACKAGE_NAME_VER
+
+COPY --from=0 /tmp/${OPENOLAT_PACKAGE_NAME_VER}/WEB-INF/classes/database/postgresql/setupDatabase.sql /tmp/setupDatabase.sql
