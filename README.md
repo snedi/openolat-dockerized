@@ -13,4 +13,5 @@ Each component includes its own `build.sh` and `run.sh` shell scripts to build a
 ```sh
 export OPENOLAT_DOCKER_IMAGE_WEB="snedi/openolat-web"
 export OPENOLAT_DOCKER_IMAGE_DB="snedi/openolat-db"
+export NGINX_IMAGE="nginx:stable"
 ```
