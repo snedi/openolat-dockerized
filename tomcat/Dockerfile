@@ -1,21 +1,21 @@
 ARG OPENOLAT_PACKAGE_NAME_VER="openolat_1520"
 
-FROM busybox
+FROM alpine:3
 
 ARG OPENOLAT_PACKAGE_NAME_VER
 
 WORKDIR /tmp
 
-RUN wget --no-check-certificate -q https://mirror.koddos.net/apache/tomcat/tomcat-8/v8.5.59/bin/apache-tomcat-8.5.59.tar.gz -O - | tar -xz
+RUN wget --no-check-certificate -q https://mirror.koddos.net/apache/tomcat/tomcat-8/v8.5.73/bin/apache-tomcat-8.5.73.tar.gz -O - | tar -xz
 RUN wget --no-check-certificate -q http://www.openolat.org/fileadmin/downloads/releases/${OPENOLAT_PACKAGE_NAME_VER}.war
 
-FROM alpine
+FROM alpine:3
 
 ARG OPENOLAT_PACKAGE_NAME_VER
 
 ARG INSTALLATION_DIR="/home/openolat"
 
-COPY --from=0 /tmp/apache-tomcat-8.5.59 /usr/tomcat
+COPY --from=0 /tmp/apache-tomcat-8.5.73 /usr/tomcat
 COPY --from=0 /tmp/${OPENOLAT_PACKAGE_NAME_VER}.war ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER}.war
 
 RUN mkdir -p ${INSTALLATION_DIR}/${OPENOLAT_PACKAGE_NAME_VER} && \
